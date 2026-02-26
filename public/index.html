@@ -239,6 +239,20 @@ body::before{
   .hbtn.clear:hover { background: #ff4466; color: white; }
   .hbtn.back { border-color: #ff4466; color: #ff4466; grid-column: 1/-1; }
   .hbtn.back:hover { background: #ff4466; color: white; }
+
+  .slots-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-items: center;
+  align-items: start;
+}
+
+/* يخلي الخامس بالنص تحت */
+.slots-grid .buzz-wrap:nth-child(5){
+  grid-column: 1 / -1;
+  justify-self: center;
+}
 </style>
 </head>
 <body>
@@ -246,7 +260,7 @@ body::before{
 <!-- PAGE 1: WELCOME -->
 <div class="page active" id="welcome-page">
   <div class="welcome-box">
-    <div class="welcome-emoji"🩶</div>
+    <div class="welcome-emoji">🩶</div>
     <div class="welcome-title">يـا هلا ومرحبا</div>
     <div class="welcome-sub">اختر فريقك واكتب اسمك</div>
 
@@ -283,19 +297,18 @@ body::before{
     <div class="banner-team" id="banner-team"></div>
   </div>
 
-  <div class="vs-divider">VS</div>
+<div class="vs-divider">VS</div>
 
-  <div class="teams-row">
-    <div class="team-col">
-      <div class="team-header green">🟢 الفريق الأخضر</div>
-      <div id="green-slots" style="display:flex;flex-direction:column;gap:0.55rem;align-items:center;"></div>
-    </div>
-    <div class="team-col">
-      <div class="team-header orange">🟠 الفريق البرتقالي</div>
-      <div id="orange-slots" style="display:flex;flex-direction:column;gap:0.55rem;align-items:center;"></div>
-    </div>
+<div class="teams-row">
+  <div class="team-col">
+    <div class="team-header green">🟢 الفريق الأخضر</div>
+    <div id="green-slots" class="slots-grid"></div>
   </div>
-
+  <div class="team-col">
+    <div class="team-header orange">🟠 الفريق البرتقالي</div>
+    <div id="orange-slots" class="slots-grid"></div>
+  </div>
+</div>
   <div class="host-section">
     <div class="host-label">🎛️ تحكم الهوست</div>
     <div class="host-btns">
