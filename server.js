@@ -80,7 +80,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("reset", ({ key }, cb) => {
-    const HOST_KEY = process.env.HOST_KEY || "9999";
+    const HOST_KEY = process.env.HOST_KEY || "j279j";
     if (String(key || "") !== HOST_KEY) return cb?.({ ok: false, reason: "UNAUTHORIZED" });
 
     state.winner = null;
