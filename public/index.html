@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>JUDY Buzz!</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet" />
 
 <style>
   .credit{
@@ -19,32 +19,26 @@
     z-index: 9999;
   }
 
-  :root {
-    --bg: #080c10;
-    --surface: #0f1318;
-    --border: #1a2030;
-    --text: #e8eeff;
-    --muted: #445566;
-    --green: #22c55e;
-    --green-dim: #22c55e22;
-    --green-glow: 0 0 25px #22c55eaa, 0 0 70px #22c55e55;
-    --orange: #f97316;
-    --orange-dim: #f9731622;
-    --orange-glow: 0 0 25px #f97316aa, 0 0 70px #f9731655;
-    --winner-glow-g: 0 0 40px #22c55ecc, 0 0 100px #22c55e88;
-    --winner-glow-o: 0 0 40px #f97316cc, 0 0 100px #f9731688;
+  :root{
+    --bg:#080c10; --surface:#0f1318; --border:#1a2030;
+    --text:#e8eeff; --muted:#445566;
+    --green:#22c55e; --green-dim:#22c55e22; --green-glow:0 0 25px #22c55eaa,0 0 70px #22c55e55;
+    --orange:#f97316; --orange-dim:#f9731622; --orange-glow:0 0 25px #f97316aa,0 0 70px #f9731655;
+    --winner-glow-g:0 0 40px #22c55ecc,0 0 100px #22c55e88;
+    --winner-glow-o:0 0 40px #f97316cc,0 0 100px #f9731688;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;margin:0;padding:0}
 
-  body {
-    font-family: 'Tajawal', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
+  body{
+    font-family:'Tajawal',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
   }
 
+  /* moving dots bg */
   body::before{
     content:'';
     position:fixed;
@@ -62,418 +56,294 @@
     pointer-events:none;
     z-index:0;
   }
+  @keyframes moveStars{from{transform:translateY(0)}to{transform:translateY(-1000px)}}
 
-  @keyframes moveStars {
-    from { transform:translateY(0px); }
-    to { transform:translateY(-1000px); }
+  .page{
+    display:none;
+    min-height:100vh;
+    position:relative;
+    z-index:1;
+    animation:fadeIn .45s ease;
   }
-
-  .page {
-    display: none;
-    min-height: 100vh;
-    position: relative;
-    z-index: 1;
-    animation: fadeIn 0.45s ease;
+  .page.active{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:1.5rem;
   }
-  .page.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-  }
-  @keyframes fadeIn {
-    from { opacity:0; transform:translateY(16px); }
-    to { opacity:1; transform:translateY(0); }
-  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
   /* WELCOME */
-  .welcome-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 28px;
-    padding: 2.5rem 2rem;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
+  .welcome-box{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:2.5rem 2rem;
+    max-width:420px;
+    width:100%;
+    text-align:center;
   }
-  .welcome-emoji {
-    font-size: 3rem;
-    margin-bottom: 0.8rem;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .welcome-emoji{font-size:3rem;margin-bottom:.8rem;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-  .welcome-title {
-    font-size: 2rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--green), var(--orange));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.3rem;
+  .welcome-title{
+    font-size:2rem;font-weight:900;
+    background:linear-gradient(135deg,var(--green),var(--orange));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    margin-bottom:.3rem;
   }
-  .welcome-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .welcome-sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
 
-  .team-selector {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    margin-bottom: 1.2rem;
+  .team-selector{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
+  .team-btn{
+    padding:1rem .5rem;border-radius:14px;border:2px solid var(--border);
+    background:transparent;color:var(--muted);
+    font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:700;
+    cursor:pointer;transition:all .2s;
+    display:flex;flex-direction:column;align-items:center;gap:.3rem;
   }
-  .team-btn {
-    padding: 1rem 0.5rem;
-    border-radius: 14px;
-    border: 2px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-family: 'Tajawal', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  .team-btn .t-icon { font-size: 1.5rem; }
-  .team-btn .t-count { font-size: 0.7rem; opacity: 0.7; }
-  .team-btn.selected-green { border-color: var(--green); color: var(--green); background: var(--green-dim); box-shadow: var(--green-glow); }
-  .team-btn.selected-orange { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); box-shadow: var(--orange-glow); }
+  .team-btn .t-icon{font-size:1.5rem}
+  .team-btn .t-count{font-size:.7rem;opacity:.7}
+  .team-btn.selected-green{border-color:var(--green);color:var(--green);background:var(--green-dim);box-shadow:var(--green-glow)}
+  .team-btn.selected-orange{border-color:var(--orange);color:var(--orange);background:var(--orange-dim);box-shadow:var(--orange-glow)}
 
-  .name-input {
-    width: 100%;
-    background: var(--bg);
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 0.85rem 1rem;
-    color: var(--text);
-    font-family: 'Tajawal', sans-serif;
-    font-size: 1.05rem;
-    text-align: center;
-    outline: none;
-    direction: rtl;
-    transition: border-color 0.2s;
-    margin-bottom: 0.9rem;
+  .name-input{
+    width:100%;
+    background:var(--bg);
+    border:2px solid var(--border);
+    border-radius:12px;
+    padding:.85rem 1rem;
+    color:var(--text);
+    font-family:'Tajawal',sans-serif;
+    font-size:1.05rem;
+    text-align:center;
+    outline:none;
+    direction:rtl;
+    transition:border-color .2s;
+    margin-bottom:.9rem;
   }
-  .name-input:focus { border-color: #ffffff44; }
-  .name-input::placeholder { color: var(--muted); }
+  .name-input:focus{border-color:#ffffff44}
+  .name-input::placeholder{color:var(--muted)}
 
-  .btn-enter {
-    width: 100%;
-    border: none;
-    border-radius: 12px;
-    padding: 0.9rem;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 900;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: none;
-    color: #080c10;
-  }
-  .btn-enter.green { background: var(--green); }
-  .btn-enter.green:hover { box-shadow: var(--green-glow); transform: translateY(-2px); }
-  .btn-enter.orange { background: var(--orange); }
-  .btn-enter.orange:hover { box-shadow: var(--orange-glow); transform: translateY(-2px); }
-
-  /* Host login block */
-  .host-login{
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-  }
-  .host-title{
-    font-size: .8rem;
-    color: var(--muted);
-    margin-bottom: .6rem;
-    font-weight: 900;
-    letter-spacing: .06em;
-  }
-  #btn-host{
-    display:block;
-    background:#667788;
+  .btn-enter{
+    width:100%;
+    border:none;border-radius:12px;
+    padding:.9rem;
+    font-family:'Tajawal',sans-serif;
+    font-size:1.1rem;font-weight:900;
+    cursor:pointer;transition:all .15s;
+    display:none;
     color:#080c10;
   }
+  .btn-enter.green{background:var(--green)}
+  .btn-enter.green:hover{box-shadow:var(--green-glow);transform:translateY(-2px)}
+  .btn-enter.orange{background:var(--orange)}
+  .btn-enter.orange:hover{box-shadow:var(--orange-glow);transform:translateY(-2px)}
+
+  /* Host login block */
+  .host-login{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+  .host-title{font-size:.8rem;color:var(--muted);margin-bottom:.6rem;font-weight:900;letter-spacing:.06em}
+  #btn-host{display:block;background:#667788;color:#080c10}
 
   /* GAME */
-  #game-page {
-    justify-content: flex-start;
-    padding: 1.2rem 1rem;
-    gap: 1rem;
-    width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
+  #game-page{
+    justify-content:flex-start;
+    padding:1.2rem 1rem;
+    gap:1rem;
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
   }
-  .top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+  .top-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    width:100%;gap:.5rem;flex-wrap:wrap;
   }
-  .game-logo { font-size: 1.4rem; font-weight: 900; }
+  .game-logo{font-size:1.4rem;font-weight:900}
 
-  .my-badge {
-    padding: 0.25rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    border: 1px solid;
+  .my-badge{
+    padding:.25rem .8rem;border-radius:20px;
+    font-size:.82rem;font-weight:700;border:1px solid;
   }
-  .my-badge.green { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-  .my-badge.orange { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
+  .my-badge.green{border-color:var(--green);color:var(--green);background:var(--green-dim)}
+  .my-badge.orange{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+  .my-badge.host{border-color:#667788;color:#cbd5e1;background:#66778822}
 
-  .live-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 6px #22c55e;
-    display: inline-block;
-    animation: blink-g 1.5s ease-in-out infinite;
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#22c55e;box-shadow:0 0 6px #22c55e;
+    display:inline-block;animation:blink-g 1.5s ease-in-out infinite;
   }
-  @keyframes blink-g { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  @keyframes blink-g{0%,100%{opacity:1}50%{opacity:.2}}
 
   /* Winner banner */
-  #winner-banner {
-    width: 100%;
-    border-radius: 16px;
-    padding: 0.9rem 1.5rem;
-    text-align: center;
-    display: none;
-    border: 2px solid;
+  #winner-banner{
+    width:100%;border-radius:16px;padding:.9rem 1.5rem;
+    text-align:center;display:none;border:2px solid;
   }
-  #winner-banner.green {
-    border-color: var(--green);
-    background: var(--green-dim);
-    box-shadow: var(--winner-glow-g);
-    animation: bp-g 1.2s ease-in-out infinite;
-  }
-  #winner-banner.orange {
-    border-color: var(--orange);
-    background: var(--orange-dim);
-    box-shadow: var(--winner-glow-o);
-    animation: bp-o 1.2s ease-in-out infinite;
-  }
-  @keyframes bp-g { 0%,100%{box-shadow:var(--winner-glow-g)} 50%{box-shadow:0 0 60px #22c55eff,0 0 120px #22c55e99} }
-  @keyframes bp-o { 0%,100%{box-shadow:var(--winner-glow-o)} 50%{box-shadow:0 0 60px #f97316ff,0 0 120px #f9731699} }
-  .banner-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.2rem; }
-  .banner-name { font-size: 1.8rem; font-weight: 900; }
-  #winner-banner.green .banner-name { color: var(--green); }
-  #winner-banner.orange .banner-name { color: var(--orange); }
-  .banner-team { font-size: 0.78rem; margin-top: 0.2rem; opacity: 0.6; }
+  #winner-banner.green{border-color:var(--green);background:var(--green-dim);box-shadow:var(--winner-glow-g);animation:bp-g 1.2s ease-in-out infinite}
+  #winner-banner.orange{border-color:var(--orange);background:var(--orange-dim);box-shadow:var(--winner-glow-o);animation:bp-o 1.2s ease-in-out infinite}
+  @keyframes bp-g{0%,100%{box-shadow:var(--winner-glow-g)}50%{box-shadow:0 0 60px #22c55eff,0 0 120px #22c55e99}}
+  @keyframes bp-o{0%,100%{box-shadow:var(--winner-glow-o)}50%{box-shadow:0 0 60px #f97316ff,0 0 120px #f9731699}}
+  .banner-label{font-size:.78rem;color:var(--muted);margin-bottom:.2rem}
+  .banner-name{font-size:1.8rem;font-weight:900}
+  #winner-banner.green .banner-name{color:var(--green)}
+  #winner-banner.orange .banner-name{color:var(--orange)}
+  .banner-team{font-size:.78rem;margin-top:.2rem;opacity:.6}
 
   /* VS divider */
-  .vs-divider {
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 900;
-    color: var(--muted);
-    letter-spacing: 0.2em;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
+  .vs-divider{
+    text-align:center;font-size:1rem;font-weight:900;
+    color:var(--muted);letter-spacing:.2em;width:100%;
+    display:flex;align-items:center;gap:.7rem;
   }
-  .vs-divider::before, .vs-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .vs-divider::before,.vs-divider::after{content:'';flex:1;height:1px;background:var(--border)}
 
-  /* Teams grid */
-  .teams-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    width: 100%;
+  /* Teams */
+  .teams-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;width:100%}
+  .team-col{display:flex;flex-direction:column;gap:.55rem}
+  .team-header{
+    text-align:center;font-size:.75rem;font-weight:900;
+    letter-spacing:.08em;text-transform:uppercase;
+    padding:.4rem;border-radius:8px;
   }
-  .team-col { display: flex; flex-direction: column; gap: 0.55rem; }
-  .team-header {
-    text-align: center;
-    font-size: 0.75rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.4rem;
-    border-radius: 8px;
-  }
-  .team-header.green { color: var(--green); background: var(--green-dim); border: 1px solid var(--green); }
-  .team-header.orange { color: var(--orange); background: var(--orange-dim); border: 1px solid var(--orange); }
+  .team-header.green{color:var(--green);background:var(--green-dim);border:1px solid var(--green)}
+  .team-header.orange{color:var(--orange);background:var(--orange-dim);border:1px solid var(--orange)}
 
-  /* Buzz button */
-  .buzz-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
-
-  .buzz-btn {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    border: 3px solid;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 900;
-    cursor: pointer;
-    transition: all 0.18s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+  .buzz-wrap{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+  .buzz-btn{
+    width:72px;height:72px;border-radius:50%;border:3px solid;
+    font-family:'Tajawal',sans-serif;font-size:.7rem;font-weight:900;
+    cursor:pointer;transition:all .18s;
+    display:flex;align-items:center;justify-content:center;
+    letter-spacing:.06em;text-transform:uppercase;
   }
-  .buzz-btn.green { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-  .buzz-btn.orange { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
-  .buzz-btn:hover:not(:disabled) { transform: scale(1.1); }
-  .buzz-btn.green:hover:not(:disabled) { box-shadow: var(--green-glow); }
-  .buzz-btn.orange:hover:not(:disabled) { box-shadow: var(--orange-glow); }
-  .buzz-btn:active:not(:disabled) { transform: scale(0.93); }
-  .buzz-btn.winner { animation: wpulse 1s ease-in-out infinite; }
-  .buzz-btn.green.winner { background: var(--green); color: #080c10; box-shadow: var(--winner-glow-g); }
-  .buzz-btn.orange.winner { background: var(--orange); color: #080c10; box-shadow: var(--winner-glow-o); }
-  @keyframes wpulse { 0%,100%{transform:scale(1.05)} 50%{transform:scale(1.14)} }
-  .buzz-btn:disabled:not(.winner) { opacity: 0.2; cursor: default; transform: none !important; box-shadow: none !important; }
-  .buzz-btn.winner { cursor: default; }
+  .buzz-btn.green{border-color:var(--green);color:var(--green);background:var(--green-dim)}
+  .buzz-btn.orange{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+  .buzz-btn:hover:not(:disabled){transform:scale(1.1)}
+  .buzz-btn.green:hover:not(:disabled){box-shadow:var(--green-glow)}
+  .buzz-btn.orange:hover:not(:disabled){box-shadow:var(--orange-glow)}
+  .buzz-btn:active:not(:disabled){transform:scale(.93)}
+  .buzz-btn.winner{animation:wpulse 1s ease-in-out infinite}
+  .buzz-btn.green.winner{background:var(--green);color:#080c10;box-shadow:var(--winner-glow-g)}
+  .buzz-btn.orange.winner{background:var(--orange);color:#080c10;box-shadow:var(--winner-glow-o)}
+  @keyframes wpulse{0%,100%{transform:scale(1.05)}50%{transform:scale(1.14)}}
+  .buzz-btn:disabled:not(.winner){opacity:.2;cursor:default;transform:none !important;box-shadow:none !important}
+  .buzz-btn.winner{cursor:default}
 
-  .slot-name {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--muted);
-    text-align: center;
-    max-width: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .slot-name{
+    font-size:.78rem;font-weight:700;color:var(--muted);
+    text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .slot-name.green { color: var(--green); }
-  .slot-name.orange { color: var(--orange); }
-  .slot-name.empty { font-style: italic; font-size: 0.68rem; font-weight: 400; }
+  .slot-name.green{color:var(--green)}
+  .slot-name.orange{color:var(--orange)}
+  .slot-name.empty{font-style:italic;font-size:.68rem;font-weight:400}
 
   /* Host section */
-  .host-section {
-    width: 100%;
-    background: #0a0e14;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 0.9rem 1.1rem;
+  .host-section{
+    width:100%;
+    background:#0a0e14;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:.9rem 1.1rem;
   }
-  .host-label { font-size: 0.68rem; color: #667788; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
-  .host-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-  .hbtn {
-    padding: 0.6rem;
-    border-radius: 9px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.18s;
-    border: 2px solid;
-    background: transparent;
+  .host-label{font-size:.68rem;color:#667788;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem}
+  .host-btns{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+  .hbtn{
+    padding:.6rem;border-radius:9px;
+    font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;
+    cursor:pointer;transition:all .18s;border:2px solid;background:transparent;
   }
-  .hbtn.reset { border-color: #667788; color: #667788; }
-  .hbtn.reset:hover { background: #667788; color: var(--bg); }
-  .hbtn.clear { border-color: #ff4466; color: #ff4466; }
-  .hbtn.clear:hover { background: #ff4466; color: white; }
-  .hbtn.back { border-color: #ff4466; color: #ff4466; grid-column: 1/-1; }
-  .hbtn.back:hover { background: #ff4466; color: white; }
+  .hbtn.reset{border-color:#667788;color:#667788}
+  .hbtn.reset:hover{background:#667788;color:var(--bg)}
+  .hbtn.clear{border-color:#ff4466;color:#ff4466}
+  .hbtn.clear:hover{background:#ff4466;color:white}
+  .hbtn.back{border-color:#ff4466;color:#ff4466;grid-column:1/-1}
+  .hbtn.back:hover{background:#ff4466;color:white}
 
   /* 2×2 + الخامس بالنص */
-  .slots-grid{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    justify-items: center;
-    align-items: start;
-  }
-  .slots-grid .buzz-wrap:nth-child(5){
-    grid-column: 1 / -1;
-    justify-self: center;
-  }
+  .slots-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;justify-items:center;align-items:start}
+  .slots-grid .buzz-wrap:nth-child(5){grid-column:1/-1;justify-self:center}
 </style>
 </head>
 
 <body>
+  <!-- PAGE 1 -->
+  <div class="page active" id="welcome-page">
+    <div class="welcome-box">
+      <div class="welcome-emoji">🩶</div>
+      <div class="welcome-title">يـا هلا ومرحبا</div>
+      <div class="welcome-sub">اختر فريقك واكتب اسمك</div>
 
-<!-- PAGE 1: WELCOME -->
-<div class="page active" id="welcome-page">
-  <div class="welcome-box">
-    <div class="welcome-emoji">🩶</div>
-    <div class="welcome-title">يـا هلا ومرحبا</div>
-    <div class="welcome-sub">اختر فريقك واكتب اسمك</div>
+      <div class="team-selector">
+        <button class="team-btn" id="btn-green" onclick="selectTeam('green')">
+          <span class="t-icon">🟢</span>
+          <span>الأخضر</span>
+          <span class="t-count" id="green-count">0/5</span>
+        </button>
+        <button class="team-btn" id="btn-orange" onclick="selectTeam('orange')">
+          <span class="t-icon">🟠</span>
+          <span>البرتقالي</span>
+          <span class="t-count" id="orange-count">0/5</span>
+        </button>
+      </div>
 
-    <div class="team-selector">
-      <button class="team-btn" id="btn-green" onclick="selectTeam('green')">
-        <span class="t-icon">🟢</span>
-        <span>الأخضر</span>
-        <span class="t-count" id="green-count">0/5</span>
-      </button>
-      <button class="team-btn" id="btn-orange" onclick="selectTeam('orange')">
-        <span class="t-icon">🟠</span>
-        <span>البرتقالي</span>
-        <span class="t-count" id="orange-count">0/5</span>
-      </button>
-    </div>
+      <input class="name-input" id="name-input" type="text" placeholder="اسمك هنا..." maxlength="14" autocomplete="off" />
+      <button class="btn-enter" id="btn-enter" onclick="enterGame()">دخول ⚡</button>
 
-    <input class="name-input" id="name-input" type="text" placeholder="اسمك هنا..." maxlength="14" autocomplete="off" />
-    <button class="btn-enter" id="btn-enter" onclick="enterGame()">دخول ⚡</button>
-
-    <!-- HOST LOGIN (ما يدخل ضمن الفرق) -->
-    <div class="host-login">
-  <div class="host-title">🎛️ دخول الهوست (واحد فقط)</div>
-  <input class="name-input" id="host-name" type="text" placeholder="اسم الهوست..." maxlength="14" autocomplete="off" />
-  <button class="btn-enter" id="btn-host" onclick="enterHost()" style="display:block;background:#667788;color:#080c10;">
-    دخول هوست
-  </button>
-</div>
-  </div>
-</div>
-
-<!-- PAGE 2: GAME -->
-<div class="page" id="game-page">
-
-  <div class="top-bar">
-    <div class="game-logo">⚡ JUDY Buzz!</div>
-
-    <!-- يظهر للجميع اسم الهوست -->
-    <span id="host-badge" class="my-badge" style="border-color:#667788;color:#cbd5e1;background:#66778822;">
-      🎛️ Host: —
-    </span>
-
-    <span id="my-badge" class="my-badge"></span>
-    <span class="live-dot"></span>
-  </div>
-
-  <div id="winner-banner">
-    <div class="banner-label">⚡ أول من ضغط</div>
-    <div class="banner-name" id="banner-name"></div>
-    <div class="banner-team" id="banner-team"></div>
-  </div>
-
-  <div class="vs-divider">VS</div>
-
-  <div class="teams-row">
-    <div class="team-col">
-      <div class="team-header green">🟢 الفريق الأخضر</div>
-      <div id="green-slots" class="slots-grid"></div>
-    </div>
-    <div class="team-col">
-      <div class="team-header orange">🟠 الفريق البرتقالي</div>
-      <div id="orange-slots" class="slots-grid"></div>
+      <!-- HOST LOGIN (بدون رمز + هوست واحد فقط) -->
+      <div class="host-login">
+        <div class="host-title">🎛️ دخول الهوست (واحد فقط)</div>
+        <input class="name-input" id="host-name" type="text" placeholder="اسم الهوست..." maxlength="14" autocomplete="off" />
+        <button class="btn-enter" id="btn-host" onclick="enterHost()">دخول هوست</button>
+      </div>
     </div>
   </div>
 
-  <div class="host-section">
-    <div class="host-label">🎛️ تحكم الهوست</div>
-<div class="host-btns">
-  <button class="hbtn reset" id="btn-reset" onclick="resetBuzzers()" style="display:none;">↺ إعادة الأزرار</button>
-  <button class="hbtn clear" id="btn-clear" onclick="clearAll()" style="display:none;">🗑️ مسح الكل</button>
-  <button class="hbtn back" onclick="goBack()">← العودة للقائمة</button>
-</div>
+  <!-- PAGE 2 -->
+  <div class="page" id="game-page">
+
+    <div class="top-bar">
+      <div class="game-logo">⚡ JUDY Buzz!</div>
+
+      <span id="host-badge" class="my-badge host">🎛️ Host: —</span>
+
+      <span id="my-badge" class="my-badge"></span>
+      <span class="live-dot"></span>
+    </div>
+
+    <div id="winner-banner">
+      <div class="banner-label">⚡ أول من ضغط</div>
+      <div class="banner-name" id="banner-name"></div>
+      <div class="banner-team" id="banner-team"></div>
+    </div>
+
+    <div class="vs-divider">VS</div>
+
+    <div class="teams-row">
+      <div class="team-col">
+        <div class="team-header green">🟢 الفريق الأخضر</div>
+        <div id="green-slots" class="slots-grid"></div>
+      </div>
+      <div class="team-col">
+        <div class="team-header orange">🟠 الفريق البرتقالي</div>
+        <div id="orange-slots" class="slots-grid"></div>
+      </div>
+    </div>
+
+    <div class="host-section">
+      <div class="host-label">🎛️ تحكم الهوست</div>
+      <div class="host-btns">
+        <button class="hbtn reset" id="btn-reset" onclick="resetBuzzers()" style="display:none;">↺ إعادة الأزرار</button>
+        <button class="hbtn clear" id="btn-clear" onclick="clearAll()" style="display:none;">🗑️ مسح الكل</button>
+        <button class="hbtn back" id="btn-back" onclick="goBack()">← العودة للقائمة</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="client.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
 
-<div class="credit">Create by JUDY</div>
+  <div class="credit">Create by JUDY</div>
 </body>
 </html>
