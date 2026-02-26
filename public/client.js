@@ -33,9 +33,9 @@ window.enterGame = function(){
 
   socket.emit("join", { name, team: selectedTeam }, (res) => {
     if(!res?.ok){
-      if(res.reason === "HOST_EXISTS") return alert("فيه هوست داخل. ممنوع أحد يصير هوست غيره (لكن اللاعبين عادي).");
-      if(res.reason === "TEAM_FULL") return alert("الفريق ممتلئ! اختاري فريق ثاني");
-      if(res.reason === "DUPLICATE_NAME") return alert("هذا الاسم مستخدم. غيّريه.");
+      if(res.reason === "HOST_EXISTS") return alert("فيه هوست داخل. ممنوع أحد يصير هوست غيره .");
+      if(res.reason === "TEAM_FULL") return alert("الفريق ممتلئ! اختر فريق ثاني");
+      if(res.reason === "DUPLICATE_NAME") return alert("هذا الاسم مستخدم. غيّره.");
       return alert("ادخال غير صحيح");
     }
 
@@ -59,12 +59,12 @@ window.enterGame = function(){
 // دخول هوست (بدون رمز) + هوست واحد فقط
 window.enterHost = function(){
   const name = ($("host-name")?.value || "").trim();
-  if(!name) return alert("اكتبي اسم الهوست");
+  if(!name) return alert("اسم الهوست");
 
   socket.emit("host_join", { name }, (res) => {
     if(!res?.ok){
-      if(res.reason === "HOST_TAKEN") return alert("فيه هوست موجود بالفعل. ما تقدرين تدخلين هوست ثاني.");
-      if(res.reason === "DUPLICATE_NAME") return alert("اسم الهوست مستخدم كلاعب. غيريه.");
+      if(res.reason === "HOST_TAKEN") return alert("فيه هوست موجود . ما تقدر تدخل هوست ثاني.");
+      if(res.reason === "DUPLICATE_NAME") return alert("اسم الهوست مستخدم كلاعب. غيره.");
       return alert("ما ضبط دخول الهوست");
     }
 
