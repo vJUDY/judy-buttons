@@ -3,7 +3,8 @@ const socket = io();
 let myName = "";
 let myTeam = "";
 let selectedTeam = "";
-let hostKey = "";
+
+let isHost = false;
 
 function $(id){ return document.getElementById(id); }
 
@@ -21,12 +22,12 @@ function setTeamUI(t){
   updateEnterBtn();
 }
 
-// Make it callable from HTML onclick
 window.selectTeam = setTeamUI;
 
 $("name-input").addEventListener("input", updateEnterBtn);
 $("name-input").addEventListener("keydown", e => { if(e.key==="Enter") window.enterGame(); });
 
+// ✅ دخول لاعب
 window.enterGame = function enterGame(){
   const name = $("name-input").value.trim();
   if (!name || !selectedTeam) return;
@@ -38,12 +39,45 @@ window.enterGame = function enterGame(){
       return alert("ادخال غير صحيح");
     }
 
+    isHost = false;
     myName = name;
     myTeam = selectedTeam;
 
     const badge = $("my-badge");
     badge.textContent = (myTeam==="green"?"🟢":"🟠") + " " + myName;
     badge.className = "my-badge " + myTeam;
+
+    // اخفاء زر reset لأنه للهوست فقط
+    const r = $("btn-reset");
+    if (r) r.style.display = "none";
+
+    $("welcome-page").classList.remove("active");
+    $("game-page").classList.add("active");
+  });
+};
+
+// ✅ دخول هوست (ما يدخل ضمن الفرق)
+window.enterHost = function enterHost(){
+  const name = ($("host-name")?.value || "").trim();
+  const key  = ($("host-key")?.value  || "").trim();
+
+  if(!name || !key) return alert("اكتبي اسم الهوست + المفتاح");
+
+  socket.emit("host_join", { name, key }, (res) => {
+    if(!res?.ok){
+      return alert("مفتاح الهوست غلط");
+    }
+
+    isHost = true;
+    myName = ""; myTeam = ""; selectedTeam = "";
+
+    // اخفاء شارة اللاعب
+    const badge = $("my-badge");
+    if (badge) { badge.textContent = ""; badge.className = "my-badge"; }
+
+    // اظهار زر reset للهوست فقط
+    const r = $("btn-reset");
+    if (r) r.style.display = "block";
 
     $("welcome-page").classList.remove("active");
     $("game-page").classList.add("active");
@@ -104,6 +138,10 @@ function renderState(payload){
   $("green-count").textContent  = payload.counts.green + "/5";
   $("orange-count").textContent = payload.counts.orange + "/5";
 
+  // ✅ عرض اسم الهوست فوق للجميع
+  const hb = $("host-badge");
+  if (hb) hb.textContent = "🎛️ Host: " + (payload.host?.name || "—");
+
   const banner = $("winner-banner");
   if (s.winner){
     banner.className = s.winner.team;
@@ -124,29 +162,41 @@ socket.on("state", (payload) => {
   updateEnterBtn();
 });
 
-// Host controls
+// ✅ Reset للهوست فقط (يقرأ key من خانة الهوست)
 window.resetBuzzers = function(){
-  if(!hostKey) hostKey = prompt("Host Key؟") || "";
-  socket.emit("reset", { key: hostKey }, (res) => {
-    if(!res?.ok) alert("مفتاح الهوست غلط");
+  if(!isHost) return;
+  const key = ($("host-key")?.value || "").trim();
+  socket.emit("reset", { key }, (res) => {
+    if(!res?.ok) alert("مفتاح الهوست غلط أو أنتِ مو الهوست");
   });
 };
 
+// ✅ Clear برضو خليته للهوست فقط (حماية)
 window.clearAll = function(){
-  if(!hostKey) hostKey = prompt("Host Key؟") || "";
+  if(!isHost) return;
+  const key = ($("host-key")?.value || "").trim();
   if(!confirm("تأكيد: مسح جميع اللاعبين؟")) return;
-  socket.emit("clear", { key: hostKey }, (res) => {
-    if(!res?.ok) alert("مفتاح الهوست غلط");
+
+  socket.emit("clear", { key }, (res) => {
+    if(!res?.ok) alert("مفتاح الهوست غلط أو أنتِ مو الهوست");
   });
 };
 
 window.goBack = function(){
+  // إذا هوست: طلّعيه كهوست
+  if (isHost) socket.emit("host_leave");
   socket.emit("leave");
+
+  isHost = false;
   myName = ""; myTeam = ""; selectedTeam = "";
+
   $("name-input").value = "";
   $("btn-enter").style.display = "none";
   $("btn-green").className = "team-btn";
   $("btn-orange").className = "team-btn";
+
+  const r = $("btn-reset");
+  if (r) r.style.display = "none";
 
   $("game-page").classList.remove("active");
   $("welcome-page").classList.add("active");
