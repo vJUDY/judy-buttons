@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buzz In!</title>
+<title>JUDY Buzz!</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   .credit{
@@ -11,7 +11,7 @@
   bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 12px;
+  font-size: 15px;
   opacity: 0.6;
   color: #ffffff;
   pointer-events: none;
@@ -37,18 +37,32 @@
     background: var(--bg); color: var(--text);
     min-height: 100vh; overflow-x: hidden;
   }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 8% 12%, #ffffff22, transparent),
-      radial-gradient(1px 1px at 35% 65%, #ffffff18, transparent),
-      radial-gradient(1.5px 1.5px at 65% 18%, #ffffff30, transparent),
-      radial-gradient(1px 1px at 88% 78%, #ffffff18, transparent),
-      radial-gradient(1px 1px at 22% 88%, #ffffff22, transparent),
-      radial-gradient(1.5px 1.5px at 92% 8%, #ffffff30, transparent),
-      radial-gradient(1px 1px at 75% 55%, #ffffff18, transparent);
-    pointer-events: none; z-index: 0;
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(2px 2px at 20% 30%, #ffffff22, transparent),
+    radial-gradient(2px 2px at 70% 60%, #ffffff18, transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, #ffffff30, transparent),
+    radial-gradient(2px 2px at 85% 20%, #ffffff22, transparent),
+    radial-gradient(1px 1px at 10% 50%, #ffffff18, transparent),
+    radial-gradient(2px 2px at 50% 40%, #ffffff20, transparent);
+  background-size:200px 200px;
+  animation: moveStars 90s linear infinite;
+  filter: drop-shadow(0 0 6px #ffffff22);
+  pointer-events:none;
+  z-index:0;
+}
+
+@keyframes moveStars {
+  from {
+    transform:translateY(0px);
   }
+  to {
+    transform:translateY(-1000px);
+  }
+}
   .page { display: none; min-height: 100vh; position: relative; z-index: 1; animation: fadeIn 0.45s ease; }
   .page.active { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -232,8 +246,8 @@
 <!-- PAGE 1: WELCOME -->
 <div class="page active" id="welcome-page">
   <div class="welcome-box">
-    <div class="welcome-emoji">⚡</div>
-    <div class="welcome-title">هلا ومرحبا</div>
+    <div class="welcome-emoji"🩶</div>
+    <div class="welcome-title">يـا هلا ومرحبا</div>
     <div class="welcome-sub">اختر فريقك واكتب اسمك</div>
 
     <div class="team-selector">
@@ -258,7 +272,7 @@
 <div class="page" id="game-page">
 
   <div class="top-bar">
-    <div class="game-logo">⚡ Buzz In!</div>
+    <div class="game-logo">⚡ JUDY Buzz!</div>
     <span id="my-badge" class="my-badge"></span>
     <span class="live-dot"></span>
   </div>
