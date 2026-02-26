@@ -418,11 +418,12 @@
 
     <!-- HOST LOGIN (ما يدخل ضمن الفرق) -->
     <div class="host-login">
-      <div class="host-title">🎛️ دخول الهوست</div>
-      <input class="name-input" id="host-name" type="text" placeholder="اسم الهوست..." maxlength="14" autocomplete="off" />
-      <input class="name-input" id="host-key" type="password" placeholder="Host Key" maxlength="32" autocomplete="off" />
-      <button class="btn-enter" id="btn-host" onclick="enterHost()">دخول هوست</button>
-    </div>
+  <div class="host-title">🎛️ دخول الهوست (واحد فقط)</div>
+  <input class="name-input" id="host-name" type="text" placeholder="اسم الهوست..." maxlength="14" autocomplete="off" />
+  <button class="btn-enter" id="btn-host" onclick="enterHost()" style="display:block;background:#667788;color:#080c10;">
+    دخول هوست
+  </button>
+</div>
   </div>
 </div>
 
@@ -462,13 +463,11 @@
 
   <div class="host-section">
     <div class="host-label">🎛️ تحكم الهوست</div>
-    <div class="host-btns">
-      <!-- Reset للهوست فقط (بنخليه مخفي افتراضياً) -->
-      <button class="hbtn reset" id="btn-reset" onclick="resetBuzzers()" style="display:none;">↺ إعادة الأزرار</button>
-
-      <button class="hbtn clear" onclick="clearAll()">🗑️ مسح الكل</button>
-      <button class="hbtn back" onclick="goBack()">← العودة للقائمة</button>
-    </div>
+<div class="host-btns">
+  <button class="hbtn reset" id="btn-reset" onclick="resetBuzzers()" style="display:none;">↺ إعادة الأزرار</button>
+  <button class="hbtn clear" id="btn-clear" onclick="clearAll()" style="display:none;">🗑️ مسح الكل</button>
+  <button class="hbtn back" onclick="goBack()">← العودة للقائمة</button>
+</div>
   </div>
 </div>
 
