@@ -20,6 +20,7 @@ function freshState() {
 }
 
 let state = freshState();
+let host = null; // { id, name }
 
 function counts() {
   return {
@@ -29,7 +30,7 @@ function counts() {
 }
 
 function broadcast() {
-  io.emit("state", { state, counts: counts(), maxPerTeam: MAX_PER_TEAM });
+  io.emit("state", { state, counts: counts(), maxPerTeam: MAX_PER_TEAM, host });
 }
 
 function findPlayerById(id) {
@@ -40,22 +41,33 @@ function findPlayerById(id) {
   return null;
 }
 
-io.on("connection", (socket) => {
-  socket.emit("state", { state, counts: counts(), maxPerTeam: MAX_PER_TEAM });
+function requireHost(socket, key, cb) {
+  const HOST_KEY = process.env.HOST_KEY || "9999";
+  if (String(key || "") !== HOST_KEY) return cb?.({ ok:false, reason:"UNAUTHORIZED" });
+  if (!host || host.id !== socket.id) return cb?.({ ok:false, reason:"NOT_HOST" });
+  return true;
+}
 
+io.on("connection", (socket) => {
+  socket.emit("state", { state, counts: counts(), maxPerTeam: MAX_PER_TEAM, host });
+
+  // ✅ لاعب يدخل فريق
   socket.on("join", ({ name, team }, cb) => {
     name = String(name || "").trim();
     team = team === "green" ? "green" : team === "orange" ? "orange" : "";
 
     if (!name || !team) return cb?.({ ok: false, reason: "INVALID" });
 
-    // Optional: prevent duplicate names
+    // ممنوع دخول هوست ضمن الفرق (لو هوست بنفس السوكيت)
+    if (host?.id === socket.id) host = null;
+
+    // منع تكرار الاسم
     const all = [...state.green, ...state.orange].filter(Boolean);
     if (all.some(p => p.name.toLowerCase() === name.toLowerCase())) {
       return cb?.({ ok: false, reason: "DUPLICATE_NAME" });
     }
 
-    // If already joined, remove old slot
+    // إذا كان داخل قبل: شيله
     const existing = findPlayerById(socket.id);
     if (existing) state[existing.team][existing.idx] = null;
 
@@ -67,6 +79,31 @@ io.on("connection", (socket) => {
     cb?.({ ok: true, slot: { team, idx: freeIdx } });
   });
 
+  // ✅ دخول هوست
+  socket.on("host_join", ({ name, key }, cb) => {
+    const HOST_KEY = process.env.HOST_KEY || "9999";
+    if (String(key || "") !== HOST_KEY) return cb?.({ ok:false, reason:"UNAUTHORIZED" });
+
+    name = String(name || "").trim();
+    if (!name) return cb?.({ ok:false, reason:"INVALID" });
+
+    // شيله من الفرق لو كان لاعب
+    const existing = findPlayerById(socket.id);
+    if (existing) state[existing.team][existing.idx] = null;
+
+    host = { id: socket.id, name };
+    broadcast();
+    cb?.({ ok:true });
+  });
+
+  socket.on("host_leave", () => {
+    if (host?.id === socket.id) {
+      host = null;
+      broadcast();
+    }
+  });
+
+  // ✅ BUZZ (أول واحد فقط)
   socket.on("buzz", (cb) => {
     const me = findPlayerById(socket.id);
     if (!me) return cb?.({ ok: false, reason: "NOT_JOINED" });
@@ -79,26 +116,29 @@ io.on("connection", (socket) => {
     cb?.({ ok: true, winner: true });
   });
 
+  // ✅ Reset (هوست فقط + key)
   socket.on("reset", ({ key }, cb) => {
-    const HOST_KEY = process.env.HOST_KEY || "j279j";
-    if (String(key || "") !== HOST_KEY) return cb?.({ ok: false, reason: "UNAUTHORIZED" });
+    const ok = requireHost(socket, key, cb);
+    if (!ok) return;
 
     state.winner = null;
     state.locked = false;
     broadcast();
-    cb?.({ ok: true });
+    cb?.({ ok:true });
   });
 
+  // ✅ Clear (هوست فقط + key)
   socket.on("clear", ({ key }, cb) => {
-    const HOST_KEY = process.env.HOST_KEY || "9999";
-    if (String(key || "") !== HOST_KEY) return cb?.({ ok: false, reason: "UNAUTHORIZED" });
+    const ok = requireHost(socket, key, cb);
+    if (!ok) return;
 
     state = freshState();
     broadcast();
-    cb?.({ ok: true });
+    cb?.({ ok:true });
   });
 
   socket.on("leave", () => {
+    // لو لاعب
     const me = findPlayerById(socket.id);
     if (me) {
       if (state.winner?.id === socket.id) {
@@ -106,6 +146,11 @@ io.on("connection", (socket) => {
         state.locked = false;
       }
       state[me.team][me.idx] = null;
+      broadcast();
+    }
+    // لو هوست
+    if (host?.id === socket.id) {
+      host = null;
       broadcast();
     }
   });
@@ -118,8 +163,9 @@ io.on("connection", (socket) => {
         state.locked = false;
       }
       state[me.team][me.idx] = null;
-      broadcast();
     }
+    if (host?.id === socket.id) host = null;
+    broadcast();
   });
 });
 
